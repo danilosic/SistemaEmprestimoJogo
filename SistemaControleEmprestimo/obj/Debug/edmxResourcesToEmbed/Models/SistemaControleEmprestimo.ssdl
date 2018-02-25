@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DbControleEmprestimoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+    <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Amigos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nome" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Telefone" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Emprestimos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nome" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DataEmprestimo" Type="datetime" Nullable="false" />
+    <Property Name="IdAmigo" Type="int" Nullable="false" />
+    <Property Name="IdJogo" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Jogos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nome" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'DbControleEmprestimo.dbo.Usuario' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="100" />
+    <Property Name="Senha" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK_dbo_Emprestimos_dbo_Amigos_IdAmigo">
+    <End Role="Amigos" Type="Self.Amigos" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Emprestimos" Type="Self.Emprestimos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Amigos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Emprestimos">
+        <PropertyRef Name="IdAmigo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Emprestimos_dbo_Jogos_IdJogo">
+    <End Role="Jogos" Type="Self.Jogos" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Emprestimos" Type="Self.Emprestimos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Jogos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Emprestimos">
+        <PropertyRef Name="IdJogo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DbControleEmprestimoModelStoreContainer">
+    <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Amigos" EntityType="Self.Amigos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Emprestimos" EntityType="Self.Emprestimos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Jogos" EntityType="Self.Jogos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Usuario].[Id] AS [Id], 
+    [Usuario].[Username] AS [Username], 
+    [Usuario].[Senha] AS [Senha]
+    FROM [dbo].[Usuario] AS [Usuario]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_dbo_Emprestimos_dbo_Amigos_IdAmigo" Association="Self.FK_dbo_Emprestimos_dbo_Amigos_IdAmigo">
+      <End Role="Amigos" EntitySet="Amigos" />
+      <End Role="Emprestimos" EntitySet="Emprestimos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Emprestimos_dbo_Jogos_IdJogo" Association="Self.FK_dbo_Emprestimos_dbo_Jogos_IdJogo">
+      <End Role="Jogos" EntitySet="Jogos" />
+      <End Role="Emprestimos" EntitySet="Emprestimos" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

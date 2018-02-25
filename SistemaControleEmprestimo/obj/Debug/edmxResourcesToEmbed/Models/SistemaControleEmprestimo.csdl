@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DbControleEmprestimoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Amigos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nome" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Telefone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Emprestimos" Relationship="Self.FK_dbo_Emprestimos_dbo_Amigos_IdAmigo" FromRole="Amigos" ToRole="Emprestimos" />
+  </EntityType>
+  <EntityType Name="Emprestimos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nome" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DataEmprestimo" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IdAmigo" Type="Int32" Nullable="false" />
+    <Property Name="IdJogo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Amigos" Relationship="Self.FK_dbo_Emprestimos_dbo_Amigos_IdAmigo" FromRole="Emprestimos" ToRole="Amigos" />
+    <NavigationProperty Name="Jogos" Relationship="Self.FK_dbo_Emprestimos_dbo_Jogos_IdJogo" FromRole="Emprestimos" ToRole="Jogos" />
+  </EntityType>
+  <EntityType Name="Jogos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nome" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Emprestimos" Relationship="Self.FK_dbo_Emprestimos_dbo_Jogos_IdJogo" FromRole="Jogos" ToRole="Emprestimos" />
+  </EntityType>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Senha" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_dbo_Emprestimos_dbo_Amigos_IdAmigo">
+    <End Role="Amigos" Type="Self.Amigos" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Emprestimos" Type="Self.Emprestimos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Amigos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Emprestimos">
+        <PropertyRef Name="IdAmigo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Emprestimos_dbo_Jogos_IdJogo">
+    <End Role="Jogos" Type="Self.Jogos" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Emprestimos" Type="Self.Emprestimos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Jogos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Emprestimos">
+        <PropertyRef Name="IdJogo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DbControleEmprestimoEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+    <EntitySet Name="Amigos" EntityType="Self.Amigos" />
+    <EntitySet Name="Emprestimos" EntityType="Self.Emprestimos" />
+    <EntitySet Name="Jogos" EntityType="Self.Jogos" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+    <AssociationSet Name="FK_dbo_Emprestimos_dbo_Amigos_IdAmigo" Association="Self.FK_dbo_Emprestimos_dbo_Amigos_IdAmigo">
+      <End Role="Amigos" EntitySet="Amigos" />
+      <End Role="Emprestimos" EntitySet="Emprestimos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Emprestimos_dbo_Jogos_IdJogo" Association="Self.FK_dbo_Emprestimos_dbo_Jogos_IdJogo">
+      <End Role="Jogos" EntitySet="Jogos" />
+      <End Role="Emprestimos" EntitySet="Emprestimos" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

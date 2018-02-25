@@ -1,0 +1,54 @@
+﻿@model SistemaControleEmprestimo.Models.Emprestimo
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Excluir Empréstimo</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Amigo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amigo.Nome)
+        </dd>
+
+        <dt>
+            Jogo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Jogo.Nome)
+        </dd>
+
+        <dt>
+            Descrição do Empréstimo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataEmprestimo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataEmprestimo)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Excluir" class="btn btn-default" /> |
+            @Html.ActionLink("Voltar", "Index")
+        </div>
+    }
+</div>
